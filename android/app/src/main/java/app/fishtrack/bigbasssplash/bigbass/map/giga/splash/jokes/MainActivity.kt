@@ -1,4 +1,5 @@
-package com.gigasplashjokes
+package app.fishtrack.bigbasssplash.bigbass.map.giga.splash.jokes
+
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
