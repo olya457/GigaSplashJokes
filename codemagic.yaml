@@ -56,17 +56,20 @@ workflows:
       - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app
       - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
 
-    publishing:
-      app_store_connect:
-        auth: integration
-        submit_to_app_store: true
-        release_type: MANUAL
-        copyright: AREL CAROL
+  publishing:
+  app_store_connect:
+    auth: integration
+    submit_to_app_store: true
+    release_type: MANUAL
+    copyright: AREL CAROL
+    export_compliance:
+      encryption_updated: false
+      contains_cryptography: false
+      is_exempt: true
+  email:
+    recipients:
+      - arelcarol76@gmail.com
+    notify:
+      success: true
+      failure: true
 
-      email:
-        recipients:
-          - arelcarol76@gmail.com
-          - arelcarol76@gmail.com
-        notify:
-          success: true
-          failure: true
