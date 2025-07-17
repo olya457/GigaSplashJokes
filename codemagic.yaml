@@ -1,5 +1,5 @@
 workflows:
-  sample-workflow:
+  ios-workflow:
     name: GigaSplash Jokes
     max_build_duration: 120
     instance_type: mac_mini_m2
@@ -10,50 +10,63 @@ workflows:
         distribution_type: app_store
         bundle_identifier: com.dfigaplj.ashodfkes
       vars:
+        BUNDLE_ID: com.dfigaplj.ashodfkes
+        XCODE_WORKSPACE: GigaSplashJokes.xcworkspace
+        XCODE_SCHEME: GigaSplashJokes
         APP_STORE_APPLE_ID: 6748704870
-        BUNDLE_ID: 'com.dfigaplj.ashodfkes'
-        XCODE_WORKSPACE: 'GigaSplashJokes.xcworkspace'
-        XCODE_SCHEME: 'GigaSplashJokes'
     scripts:
-      - name: Install node modules
+      - name: Install npm dependencies
         script: |
           npm install
+
       - name: Install CocoaPods dependencies
         script: |
           cd ios && pod install
-      - name: Set up provisioning profile settings on Xcode project
+
+      - name: Set up provisioning profiles
         script: |
-          cd ios
           xcode-project use-profiles
+
       - name: Increment build number
         script: |
-          #!/bin/sh
-          cd $CM_BUILD_DIR/ios
+          cd ios
           LATEST_BUILD_NUMBER=$(app-store-connect get-latest-app-store-build-number "$APP_STORE_APPLE_ID")
+          echo "Latest build number: $LATEST_BUILD_NUMBER"
           agvtool new-version -all $(($LATEST_BUILD_NUMBER + 1))
-      - name: Set Info.plist values
-        script: |
-          PLIST=$CM_BUILD_DIR/ios/AwesomeProject/Info.plist
-          PLIST_BUDDY=/usr/libexec/PlistBuddy
-          $PLIST_BUDDY -c "Add :ITSAppUsesNonExemptEncryption bool false" $PLIST
-      - name: Build ipa for distribution
+
+      - name: Build IPA for distribution
         script: |
           xcode-project build-ipa \
             --workspace "$CM_BUILD_DIR/ios/$XCODE_WORKSPACE" \
             --scheme "$XCODE_SCHEME"
+
+      - name: Check IPA before publishing
+        script: |
+          echo "IPA files in build/ios/ipa:"
+          ls -lh build/ios/ipa
+
+      - name: Extract possible ITMS errors
+        script: |
+          echo "Searching for ITMS errors in logs..."
+          grep -i "ITMS" /tmp/xcodebuild_logs/*.log || echo "No ITMS errors found"
+
     artifacts:
       - build/ios/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log
       - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app
       - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
+
     publishing:
-          email:
-            recipients:
-              - arelcarol76@gmail.com
-            notify:
-              success: false
-              failure: true 
-          app_store_connect:
-            auth: integration
-            submit_to_app_store: true
-            copyright: AREL CAROL
+      app_store_connect:
+        auth: integration
+        submit_to_app_store: true
+        release_type: MANUAL
+        copyright: AREL CAROL
+
+      email:
+        recipients:
+          - arelcarol76@gmail.com
+          - arelcarol76@gmail.com
+        notify:
+          success: true
+          failure: true
