@@ -10,7 +10,7 @@ workflows:
         distribution_type: app_store
         bundle_identifier: com.dfigaplj.ashodfkes
       vars:
-        APP_STORE_APPLE_ID: 6748704870 #change
+        APP_STORE_APPLE_ID: 6748704870
         BUNDLE_ID: 'com.dfigaplj.ashodfkes'
         XCODE_WORKSPACE: 'GigaSplashJokes.xcworkspace'
         XCODE_SCHEME: 'GigaSplashJokes'
@@ -21,16 +21,14 @@ workflows:
       - name: Install CocoaPods dependencies
         script: |
           cd ios && pod install
-      - name: Set up provisioning profile settings on  Xcode project
+      - name: Set up provisioning profile settings on Xcode project
         script: |
           cd ios
           xcode-project use-profiles
-      - name: Increment build number
+      - name: Set static build version
         script: |
-          #!/bin/sh
           cd $CM_BUILD_DIR/ios
-          LATEST_BUILD_NUMBER=$(app-store-connect get-latest-app-store-build-number "$APP_STORE_APPLE_ID")
-          agvtool new-version -all $(($LATEST_BUILD_NUMBER + 1))
+          agvtool new-version -all 2
       - name: Set Info.plist values
         script: |
           PLIST=$CM_BUILD_DIR/ios/AwesomeProject/Info.plist
