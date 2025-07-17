@@ -28,7 +28,7 @@ workflows:
       - name: Set static build version
         script: |
           cd $CM_BUILD_DIR/ios
-          agvtool new-version -all 2
+          agvtool new-version -all 3
       - name: Set Info.plist values
         script: |
           PLIST=$CM_BUILD_DIR/ios/AwesomeProject/Info.plist

@@ -262,7 +262,6 @@
 				CURRENT_PROJECT_VERSION = 3;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = GigaSplashJokes/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "GigaSplash Jokes";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -295,7 +294,6 @@
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 3;
 				INFOPLIST_FILE = GigaSplashJokes/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "GigaSplash Jokes";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
